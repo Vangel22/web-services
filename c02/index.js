@@ -11,18 +11,6 @@ const readData = (source) => {
   });
 };
 
-// const test = async () => {
-//   try {
-//     const res = await readData("./data");
-
-//     console.log("res", res);
-//   } catch (err) {
-//     throw err;
-//   }
-// };
-
-// test();
-
 const writeData = (data, destination, typeOfData) => {
   return new Promise((success, fail) => {
     const out =
