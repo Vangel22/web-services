@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
-const Car = mongoose.model("cars", {
+const carSchema = new mongoose.Schema({
   model: String,
   manufacturer: String,
   year: Number,
 });
+
+const Car = mongoose.model("cars", carSchema);
 
 const addCar = async (car) => {
   let c = new Car(car);
