@@ -1,4 +1,7 @@
 const express = require("express");
+require("dotenv").config();
+
+require("./pkg/db");
 const {
   getAll,
   getOne,

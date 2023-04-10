@@ -1,10 +1,10 @@
 const {
-  addCar,
-  removeCar,
-  updateCar,
   getAllCars,
-  getCarByIndex,
-} = require("../pkg/cars");
+  getOneCar,
+  addCar,
+  updateCar,
+  removeCar,
+} = require("../pkg/cars/mongo");
 
 const getAll = async (req, res) => {
   try {
@@ -18,7 +18,7 @@ const getAll = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    const car = await getCarByIndex(Number(req.params.id));
+    const car = await getOneCar(Number(req.params.id));
     return res.status(200).send(car);
   } catch (err) {
     console.log(err);
