@@ -3,8 +3,8 @@ const {
   removeCar,
   updateCar,
   getAllCars,
-  getCarByIndex,
-} = require("../pkg/cars");
+  getOneCar,
+} = require("../pkg/cars/mongo");
 
 //source of data => cars manupulation => handlers for cars =>  /api/cars
 
@@ -21,11 +21,7 @@ const getAll = async (req, res) => {
 //cars/:id?month=10
 const getOne = async (req, res) => {
   try {
-    //req.params
-    //req.query
-    //req.body
-    //req.headers
-    const car = await getCarByIndex(Number(req.params.id));
+    const car = await getOneCar(req.params.id);
     return res.status(200).send(car);
   } catch (err) {
     console.log(err);
@@ -35,11 +31,6 @@ const getOne = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    // {
-    //     "manufacturer"
-    //     "model"
-    //     "year":
-    // }
     await addCar(req.body);
     return res.status(201).send(req.body); //Success and created resource
   } catch (err) {
@@ -50,7 +41,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    await updateCar(Number(req.params.id), req.body);
+    await updateCar(req.params.id, req.body);
     return res.status(204).send(""); //Success but no entity-body - updating existing car
   } catch (err) {
     console.log(err);
@@ -60,7 +51,7 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    await removeCar(Number(req.params.id));
+    await removeCar(req.params.id);
     return res.status(204).send("");
   } catch (err) {
     console.log(err);

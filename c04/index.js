@@ -1,11 +1,13 @@
 const express = require("express");
+
+require("dotenv").config();
+require("./pkg/db");
+
 const { getAll, getOne, create, update, remove } = require("./handlers/cars");
 
 const api = express();
 
 api.use(express.json());
-
-//GET, POST, PUT, PATCH, DELETE
 
 api.get("/api/cars", getAll);
 
@@ -20,8 +22,3 @@ api.delete("/api/cars/:id", remove);
 api.listen(10000, (err) => {
   err ? console.log(err) : console.log("Server started on port 10000");
 });
-
-//Homework
-//Imlement a PATCH method
-//Add in pkg/cars/index updatePartial
-//Add in handlers/cars.js add updatePartial
