@@ -33,6 +33,7 @@ const getOne = async (req, res) => {
 
 const create = async (req, res) => {
   try {
+    await validate(req.body, Car);
     await addCar(req.body);
     return res.status(201).send(req.body); //Success and created resource
   } catch (err) {
@@ -43,6 +44,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
+    await validate(req.body, Car);
     await updateCar(req.params.id, req.body);
     return res.status(204).send(""); //Success but no entity-body - updating existing car
   } catch (err) {

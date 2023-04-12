@@ -1,9 +1,9 @@
 const { Validator } = require("node-input-validator");
 
 const Car = {
-  model: "required | string",
-  manufacturer: "required | string",
-  year: "required | integer",
+  model: "required|string",
+  manufacturer: "required|string",
+  year: "required|integer",
 };
 
 const CarPartial = {
