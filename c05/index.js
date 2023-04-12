@@ -1,5 +1,6 @@
 const express = require("express");
-require("dotenv").config();
+// require("dotenv").config();
+const config = require("./pkg/config");
 
 require("./pkg/db");
 const {
@@ -22,6 +23,8 @@ api.put("/api/cars/:id", update);
 api.patch("/api/cars/:id", updatePartial);
 api.delete("/api/cars/:id", remove);
 
-api.listen(10000, (err) => {
-  err ? console.log(err) : console.log("Server started on port 10000");
+api.listen(config.get("service").port, (err) => {
+  err
+    ? console.log(err)
+    : console.log(`Server started on port ${config.get("service").port}`);
 });
