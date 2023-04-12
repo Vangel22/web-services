@@ -5,7 +5,6 @@ const {
   updateCar,
   removeCar,
 } = require("../pkg/cars/mongo");
-
 const validator = require("../pkg/cars/validate");
 
 const getAll = async (req, res) => {
