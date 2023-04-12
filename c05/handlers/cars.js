@@ -6,6 +6,8 @@ const {
   removeCar,
 } = require("../pkg/cars/mongo");
 
+const validator = require("../pkg/cars/validate");
+
 const getAll = async (req, res) => {
   try {
     const cars = await getAllCars();
@@ -28,7 +30,7 @@ const getOne = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-    console.log("req.body", req.body);
+    await validator.validate(req.body, validator.Car);
     await addCar(req.body);
     return res.status(201).send(req.body); //Success and created resource
   } catch (err) {
@@ -39,6 +41,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
+    await validator.validate(req.body, validator.Car);
     await updateCar(Number(req.params.id), req.body);
     return res.status(204).send(""); //Success but no entity-body
   } catch (err) {
@@ -48,14 +51,14 @@ const update = async (req, res) => {
 };
 
 const updatePartial = async (req, res) => {
-  //change brand name
-
-  //   const data = await updatePartial();
-
-  //   const { id } = req.params;
-  //   const { model } = req.body;
-
-  return res.status(200).send("");
+  try {
+    await validator.validate(req.body, validator.CarPartial);
+    await cars.updateCar(req.params.id, req.body);
+    return res.status(204).send("");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Internal Server Error");
+  }
 };
 
 const remove = async (req, res) => {
