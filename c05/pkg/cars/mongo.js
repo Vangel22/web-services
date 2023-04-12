@@ -2,8 +2,37 @@ const mongoose = require("mongoose");
 
 const carSchema = new mongoose.Schema({
   model: String,
-  manufacturer: String,
-  year: Number,
+  manufacturer: {
+    type: String,
+    minLength: 10,
+  },
+  year: {
+    type: Number,
+    validate: {
+      validator: (v) => v > 2020,
+      message: (props) => `Cars of ${props.value} year aren't allowed!`,
+    },
+  },
+  //vehicle: mongoose.SchemaTypes.ObjectId -> reference to another object
+  email: {
+    type: String,
+    required: true,
+    lowercase: true,
+  },
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: () => Date.now(),
+  },
+  updatedAt: {
+    type: Date,
+    default: () => Date.now(),
+  },
+  carWeight: {
+    type: Number,
+    min: 1200,
+    max: 3000,
+  },
 });
 
 const Car = mongoose.model("cars", carSchema);
