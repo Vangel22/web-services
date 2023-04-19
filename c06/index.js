@@ -10,6 +10,10 @@ const api = express();
 
 api.use(express.json());
 
+//api.post(login) -> token
+
+//if(config.get("development").jwt_key)
+
 api.get("/api/cars", getAll);
 
 api.get("/api/cars/:id", getOne);
