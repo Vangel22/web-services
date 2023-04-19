@@ -21,6 +21,10 @@ const getByEmail = async (email) => {
   return await Account.findOne({ email });
 };
 
+const setNewPassword = async (id, password) => {
+  return await Account.updateOne({ _id: id }, password);
+};
+
 const getAll = async () => {
   return await Account.find({});
 };

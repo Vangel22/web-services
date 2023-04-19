@@ -1,28 +1,49 @@
 const express = require("express");
+var { expressjwt: jwt } = require("express-jwt");
 
 const config = require("./pkg/config");
-
 require("./pkg/db");
-
-const { getAll, getOne, create, update, remove } = require("./handlers/cars");
+const {
+  login,
+  register,
+  refreshToken,
+  forgotPassword,
+  resetPassword,
+} = require("./handlers/auth");
 
 const api = express();
 
 api.use(express.json());
 
+api.use(
+  jwt({
+    secret: config.get("development").jwt_key,
+    algorithms: ["HS256"],
+  }).unless({
+    path: [
+      "/api/v1/auth/login",
+      "/api/v1/auth/register",
+      "/api/v1/auth/forgot-password",
+      "/api/v1/auth/reset-password",
+    ],
+  })
+);
+
+api.post("/api/v1/auth/login", login);
+api.post("/api/v1/auth/register", register);
+api.get("/api/v1/auth/refresh-token", refreshToken);
+api.post("/api/v1/auth/forgot-password", forgotPassword);
+api.post("/api/v1/auth/reset-password", resetPassword);
+
+api.use(function (err, req, res, next) {
+  if (err.name === "UnauthorizedAccess") {
+    res.status(401).send("Invalid token...");
+  }
+});
+
 //api.post(login) -> token
 
 //if(config.get("development").jwt_key)
-
-api.get("/api/cars", getAll);
-
-api.get("/api/cars/:id", getOne);
-
-api.post("/api/cars", create);
-
-api.put("/api/cars/:id", update);
-
-api.delete("/api/cars/:id", remove);
 
 api.listen(config.get("development").port, (err) => {
   err
@@ -31,9 +52,7 @@ api.listen(config.get("development").port, (err) => {
 });
 
 //Homework
-// 1. Create a Person Schema
-//    - Validate person fields - node-input-validator or mongoose
-// 2. Create CRUD functions
-//    - plus functions for exercise -> take all people that are under 18 years old
-// 3. Create handlers for these functions
-// 4. Display them in index.js and run them with Insomnia or POSTMAN
+// 1. Forgot password - try to implement it with mailgun
+// 2. Test out reset password
+// 3. Read about express-jwt lib
+// 4. Test out all the routes and if there are errors try to debug them
