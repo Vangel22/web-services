@@ -47,3 +47,31 @@ api.listen(config.get("service").port, (err) => {
     ? console.log(err)
     : console.log(`Server started on port ${config.get("service").port}`);
 });
+
+// ********************************** //
+// ********************************** //
+// !!!FRONT-END CODE!!! //
+// try {
+//     let sendData = {
+//         some_thing: 'something'
+//     };
+
+//     let res = await fetch(
+//         'http://localhoslt:10000/api/v1/some-endpoint',
+//         {
+//             method: 'POST',
+//             body: JSON.stringify(sendData),
+//             headers: {
+//                 'Authorization': `Bearer ${jw_token}`,
+//                 'Content-Type': 'application/json'
+//             }
+//         }
+//     );
+
+//     let data = await res.json();
+//     console.log(data);
+// } catch(err) {
+//     console.log(err);
+// }
+// ********************************** //
+// ********************************** //
