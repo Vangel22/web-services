@@ -2,7 +2,8 @@
     "development": {
         "port": 10000,
         "MONGO_USERNAME": "Vangel22",
-        "MONGO_PASSWORD": "test1234"
+        "MONGO_PASSWORD": "test1234",
+        "jwt_key": "my_secret"
     },
     "live" : {
         "port": 8080,

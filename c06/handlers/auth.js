@@ -116,6 +116,7 @@ const resetPassword = async (req, res) => {
     userAccount._id,
     newPasswordHashed
   );
+  
   return res.status(200).send(userPassChanged);
 };
 
