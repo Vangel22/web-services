@@ -52,6 +52,7 @@ const update = async (req, res) => {
       ...req.body,
       user_id: req.auth.id,
     };
+    //check if the user_id is same as the one in the post
     await post.update(req.params.id, data);
     return res.status(204).send("");
   } catch (err) {
