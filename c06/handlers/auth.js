@@ -58,7 +58,7 @@ const register = async (req, res) => {
 
 const refreshToken = async (req, res) => {
   const payload = {
-    ...req.user,
+    ...req.auth,
     exp: new Date().getTime() / 1000 + 7 * 24 * 60 * 60,
   };
   const token = jwt.sign(payload, config.get("service").jwt_key);
