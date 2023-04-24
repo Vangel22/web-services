@@ -10,6 +10,14 @@ const {
   forgotPassword,
   resetPassword,
 } = require("./handlers/auth");
+const {
+  getAll,
+  getSingle,
+  create,
+  update,
+  updatePartial,
+  remove,
+} = require("./handlers/post");
 
 const api = express();
 
@@ -35,15 +43,18 @@ api.get("/api/v1/auth/refresh-token", refreshToken);
 api.post("/api/v1/auth/forgot-password", forgotPassword);
 api.post("/api/v1/auth/reset-password", resetPassword);
 
+api.get("/api/v1/blog", getAll);
+api.get("/api/v1/blog/:id", getSingle);
+api.post("/api/v1/blog", create);
+api.put("/api/v1/blog/:id", update);
+api.patch("/api/v1/blog/:id", updatePartial);
+api.delete("/api/v1/blog/:id", remove);
+
 api.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedAccess") {
     res.status(401).send("Invalid token...");
   }
 });
-
-//api.post(login) -> token
-
-//if(config.get("development").jwt_key)
 
 api.listen(config.get("development").port, (err) => {
   err
@@ -51,8 +62,16 @@ api.listen(config.get("development").port, (err) => {
     : console.log(`Server started on port ${config.get("development").port}`);
 });
 
-//Homework
-// 1. Forgot password - try to implement it with mailgun
-// 2. Test out reset password
-// 3. Read about express-jwt lib
-// 4. Test out all the routes and if there are errors try to debug them
+// async function test() {
+//   const data = await fetch("/accounts", {
+//     headers: {
+//       "Authorization": `Bearer ${token}`
+//     }
+//   })
+// }
+
+// Homework
+// 1. Create two users
+// 2. Create new schema for bankAccount
+// 3. Implement handlers
+// 4. Call the handlers inside index.js
