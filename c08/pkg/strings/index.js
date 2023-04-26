@@ -7,6 +7,13 @@ const makeId = (length) => {
     result += characters.charAt(Math.floor(Math.random() * charLenght));
   }
 
+  //with while
+  //let counter = 0;
+  //while(counter < charLength) {
+  // result += characters.charAt(Math.floor(Math.random() * charLenght));
+  //counter++
+  //}
+
   return result;
 };
 
