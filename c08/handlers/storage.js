@@ -15,6 +15,8 @@ const ALLOWED_FILETYPES = [
 ];
 
 const upload = async (req, res) => {
+  console.log(req.files);
+  //<input name="foo" type="file" />
   if (MAX_FILESIZE < req.files.document.size) {
     return res.status(400).send("File exceeds max file size!");
   }

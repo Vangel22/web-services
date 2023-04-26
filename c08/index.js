@@ -18,6 +18,9 @@ api.use(
 );
 
 api.use(fileUpload());
+// app.use(fileUpload({
+//   limits: { fileSize: 50 * 1024 * 1024 },
+// }));
 
 api.post("/api/v1/storage", upload);
 api.get("/api/v1/storage/:filename", download);
