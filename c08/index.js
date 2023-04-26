@@ -53,3 +53,7 @@ api.listen(config.get("development").port, (err) => {
     ? console.log(err)
     : console.log(`Server started on port ${config.get("development").port}`);
 });
+
+//HOMEWORK
+// 1. api.get("/api/v1/storage", listFiles)
+// 2. api.delete("/api/v1/stodage/:filename", removeFile)

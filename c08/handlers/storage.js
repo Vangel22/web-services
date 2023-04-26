@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const { makedId } = require("../pkg/strings");
+const { makeId } = require("../pkg/strings");
 //upload
 //download
 
@@ -44,7 +44,7 @@ const upload = async (req, res) => {
     fs.mkdirSync(userDirPath);
   }
 
-  const fileName = `${makedId(6)}_${req.files.document.name}`; //unique name of file
+  const fileName = `${makeId(6)}_${req.files.document.name}`; //unique name of file
   const filePath = `${userDirPath}/${fileName}`; //uploads/vangel_ietesuihfuidshfuishuisdhfyuisdhfui/123456_tree_photo.jpg
 
   req.files.document.mv(filePath, (err) => {
@@ -56,7 +56,17 @@ const upload = async (req, res) => {
 };
 
 const download = async (req, res) => {
-  //
+  //get the user directory by res.auth.id and check if the directory exists
+  //does the file exist
+  //download file from res.download
+  const userDir = `user_${req.auth.id}`;
+  const userDirPath = `${__dirname}/../uploads/${userDir}`;
+  const filePath = `${userDirPath}/${req.params.filename}`;
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).send("File not found!");
+  }
+
+  res.download(filePath);
 };
 
 module.exports = {
