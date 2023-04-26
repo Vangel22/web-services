@@ -1,15 +1,10 @@
 const express = require("express");
 var { expressjwt: jwt } = require("express-jwt");
+const fileUpload = require("express-fileupload");
 
+const { upload, download } = require("./handlers/storage");
 const config = require("./pkg/config");
 require("./pkg/db");
-const {
-  login,
-  register,
-  refreshToken,
-  forgotPassword,
-  resetPasswort,
-} = require("./handlers/auth");
 
 const api = express();
 
@@ -19,21 +14,17 @@ api.use(
   jwt({
     secret: config.get("service").jwt_key,
     algorithms: ["HS256"],
-  }).unless({
-    path: [
-      "/api/v1/auth/login",
-      "/api/v1/auth/register",
-      "/api/v1/auth/forgot-password",
-      "/api/v1/auth/reset-password",
-    ],
   })
 );
 
-api.post("/api/v1/auth/login", login);
-api.post("/api/v1/auth/register", register);
-api.get("/api/v1/auth/refresh-token", refreshToken);
-api.post("/api/v1/auth/forgot-password", forgotPassword);
-api.post("/api/v1/auth/reset-password", resetPasswort);
+api.use(fileUpload());
+
+api.post("/api/v1/storage", upload);
+api.get("/api/v1/storage/:filename", download);
+
+// homework
+// api.get("/api/v1/storage", listFiles);
+// api.delete("/api/v1/storage/:filename", removeFile);
 
 api.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
