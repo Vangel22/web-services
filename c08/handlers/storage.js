@@ -69,7 +69,33 @@ const download = async (req, res) => {
   res.download(filePath);
 };
 
+
+const listFiles = async (req, res) => {​​​​​​
+    const userDir = `user_${​​​​​​req.auth.id}​​​​​​`;
+    const userDirPath = `${​​​​​​__dirname}​​​​​​/../uploads/${​​​​​​userDir}​​​​​​`;
+    if (!fs.existsSync(userDirPath)) {​​​​​​
+        res.status(400).json({​​​​​​ mssg: 'You dont have any uploads yet' }​​​​​​);
+    }​​​​​​
+    const files = fs.readdirSync(userDirPath);
+    res.status(200).json({​​​​​​ mssg: 'Uploaded files: ', files }​​​​​​);
+}​​​​​​;
+
+
+
+const removeFile = async (req, res) => {​​​​​​
+    const userDir = `user_${​​​​​​req.auth.id}​​​​​​`;
+    const userDirPath = `${​​​​​​__dirname}​​​​​​/../uploads/${​​​​​​userDir}​​​​​​`;
+    const {​​​​​​ fileName }​​​​​​ = req.params;
+    if (!fs.existsSync(`${​​​​​​userDirPath}​​​​​​/${​​​​​​fileName}​​​​​​`)) {​​​​​​
+        return res.status(404).send('File already deleted.');
+    }​​​​​​
+    fs.unlinkSync(`${​​​​​​userDirPath}​​​​​​/${​​​​​​fileName}​​​​​​`);
+    res.status(200).json({​​​​​​ mssg: 'delete a file', deletedFile: fileName }​​​​​​);
+}​​​​​​;
+
 module.exports = {
   upload,
   download,
+  listFiles,
+  removeFile
 };

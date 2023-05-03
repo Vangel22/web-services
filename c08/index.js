@@ -2,7 +2,12 @@ const express = require("express");
 var { expressjwt: jwt } = require("express-jwt");
 const fileUpload = require("express-fileupload");
 
-const { upload, download } = require("./handlers/storage");
+const {
+  upload,
+  download,
+  removeFile,
+  listFiles,
+} = require("./handlers/storage");
 const config = require("./pkg/config");
 require("./pkg/db");
 const {
@@ -41,6 +46,8 @@ api.post("/api/v1/auth/reset-password", resetPassword);
 
 api.post("/api/v1/storage", upload);
 api.get("/api/v1/storage/:filename", download);
+api.get("/api/v1/storage", listFiles);
+api.delete("/api/v1/storage/:filename", removeFile);
 
 api.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedAccess") {
