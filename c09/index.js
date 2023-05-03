@@ -1,19 +1,12 @@
-const express = require("express");
-const config = require("./pkg/config");
-require("./pkg/db");
+const config = require('./pkg/config');
+const express = require('express');
+const weather = require('./handlers/weather');
 
 const api = express();
 
-api.use(express.json());
+api.get('/api/v1/weather/:city', weather.getForCity);
 
-api.use(function (err, req, res, next) {
-  if (err.name === "UnauthorizedError") {
-    res.status(401).send("invalid token...");
-  }
-});
-
-api.listen(config.get("service").port, (err) => {
-  err
-    ? console.log(err)
-    : console.log(`Server started on port ${config.get("service").port}`);
+api.listen(config.get('service').port, err => {
+    if(err) return console.log(err);
+    return console.log('Service started on port', config.get('service').port);
 });

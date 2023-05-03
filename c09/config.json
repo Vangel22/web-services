@@ -4,5 +4,11 @@
         "MONGO_USERNAME": "Vangel22",
         "MONGO_PASSWORD": "test1234",
         "jwt_key": "my_secret"
+    },
+    "weather": {
+        "port": 10000,
+        "api_key":"63ff6c719581618dc79c14c2a85bf27e",
+        "cache_expiery": 1800,
+        "API_URL": "https://api.openweathermap.org/data/2.5"
     }
 }
