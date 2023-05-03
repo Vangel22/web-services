@@ -90,6 +90,10 @@ const removeFile = async (req, res) => {​​​​​​
         return res.status(404).send('File already deleted.');
     }​​​​​​
     fs.unlinkSync(`${​​​​​​userDirPath}​​​​​​/${​​​​​​fileName}​​​​​​`);
+
+//Is the directory of the file that is to be removed EMPTY
+//If the directory is empty remove it
+
     res.status(200).json({​​​​​​ mssg: 'delete a file', deletedFile: fileName }​​​​​​);
 }​​​​​​;
 
