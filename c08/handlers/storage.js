@@ -49,7 +49,38 @@ const download = async (req, res) => {
   res.download(filePath);
 };
 
+const listFiles = async (req, res) => {
+  const userDir = `user_${req.auth.id}`;
+  const userDirPath = `${__dirname}/../uploads/${userDir}`;
+
+  if (!fs.existsSync(userDirPath))
+    return res.status(404).send("Directory not found!");
+
+  let storeFileName = [];
+
+  fs.readdir(userDirPath, function (err, files) {
+    if (err) return res.status(500).send("Req failed!");
+    files.forEach((file) => {
+      storeFileName.push(file.name);
+    });
+  });
+
+  res.send(storeFileName);
+};
+
+const removeFile = async (req, res) => {
+  const userDir = `user_${req.auth.id}`;
+  const userDirPath = `${__dirname}/../uploads/${userDir}`;
+  const filePath = `${userDirPath}/${req.params.filename}`;
+  if (fs.existsSync(filePath)) {
+    fs.unlink(filePath);
+    res.send(`File removed: ${filePath}`);
+  }
+};
+
 module.exports = {
   upload,
   download,
+  listFiles,
+  removeFile,
 };
