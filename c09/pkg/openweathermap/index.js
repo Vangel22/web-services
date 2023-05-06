@@ -33,7 +33,7 @@ const getCityWeather = async (city) => {
     const data = await res.json();
 
     CACHE[city] = {
-      timestamp: new Date().getDate() / 1000, //21:01
+      timestamp: new Date().getTime() / 1000, //21:01
       data: data,
     };
   } catch (err) {
