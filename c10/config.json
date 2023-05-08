@@ -1,0 +1,11 @@
+{
+    "service": {
+        "port": 10000,
+        "MONGO_USERNAME": "Vangel22",
+        "MONGO_PASSWORD": "test1234",
+        "jwt_key": "my_secret",
+        "api_key": "77d2841379d210e54183d1a7399e09a0-6b161b0a-a8b0a062",
+        "domain": "sandbox6a27711605204b26a87436754162784d.mailgun.org",
+        "sender_email": "h.vangel22@gmail.com"
+    }
+}
