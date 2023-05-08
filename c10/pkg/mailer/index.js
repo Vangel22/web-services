@@ -113,6 +113,5 @@ const readTemplate = async (file) => {
 };
 
 module.exports = {
-  sendMessage,
   sendMail,
 };

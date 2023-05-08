@@ -1,8 +1,8 @@
 const mailer = require("../pkg/mailer");
+const { validate, MailgunFields } = require("../pkg/mailer/validate");
 
 const sendMessage = async (req, res) => {
   try {
-    //to, firstname, lastname, email
     await mailer.sendMessage();
   } catch (err) {
     console.log(err);
@@ -12,7 +12,9 @@ const sendMessage = async (req, res) => {
 
 const sendWelcomeMail = async (req, res) => {
   try {
+    //VALIDATE FIELDS
     //to, firstname, lastname, email
+    await validate(req.body, MailgunFields);
     const result = await mailer.sendMail(
       req.body.to,
       "WELCOME",

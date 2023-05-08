@@ -20,3 +20,9 @@ api.listen(config.get("development").port, (err) => {
     ? console.log(err)
     : console.log(`Server started on port ${config.get("development").port}`);
 });
+
+//Homework
+//1. What is callback, promise, async/await
+//2. const, let, var differences
+//3. types of functions
+//4. explain crud functionalities
