@@ -1,0 +1,8 @@
+{
+    "development": {
+        "port": 10000,
+        "api_key": "key-08845b24f1f301c0858e3817a184507e",
+        "domain": "sandbox6a27711605204b26a87436754162784d.mailgun.org",
+        "sender_email": "test@test.com"
+    }
+}
