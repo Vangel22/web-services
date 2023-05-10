@@ -1,12 +1,14 @@
 const fs = require("fs");
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
+const mailgun = new Mailgun(formData);
+
 const config = require("../config");
 
 const mailTemplates = {
   PASSWORD_RESET: {
     title: "Your password reset link has been generated",
-    template: "reset_password.html",
+    template: "reset-password.html",
   },
   WELCOME: {
     title: "Welcome to our website",
@@ -15,35 +17,36 @@ const mailTemplates = {
 };
 
 const sendMail = async (to, type, data) => {
-  // data: {first_name: 'Bojan', last_name: 'Gavrovski', email: 'bojan@gmail.com'}
-  const mailgun = new Mailgun(formData);
+  //to -> to whom the mail is sent
+  //type -> it will refer to the template
+  //data -> data sent from the user
+  console.log("here");
   const mg = mailgun.client({
     username: "api",
-    key: config.get("service").api_key,
+    key:
+      config.get("service").api_key || "key-08845b24f1f301c0858e3817a184507e",
   });
 
-  let title = mailTemplates[type].title;
+  // let title = mailTemplates[type].title;
+  // let templatePath = `${__dirname}/../../email_templates/${mailTemplates[type].template}`;
+  // let content = await readTemplate(templatePath);
 
-  let templatePath = `${__dirname}/../../email_templates/${mailTemplates[type].template}`;
-  let content = await readTemplate(templatePath);
-
-  for (let i in data) {
-    let regex = new RegExp(`\{\{${i}\}\}`, "g"); // {{first_name}} // {{last_name}} // {{email}}
-    content = content.replace(regex, data[i]); // Bojan // Gavrovski // bojan@gmail.com
-  }
+  // for (let i in data) {
+  //   let regex = new RegExp(`\{\{${i}\}\}`, "g");
+  //   content = content.replace(regex, data[i]);
+  // }
 
   let options = {
     from: config.get("service").sender_email,
     to: to,
-    subject: title,
-    text: "Testing",
-    html: content,
+    subject: "Hello",
+    text: "First testing with text",
+    // html: content,
   };
-  console.log(options);
-
+  console.log("options", options);
   try {
-    let res = await mg.messages.create(config.get("service").domain, options);
-    console.log("res", res);
+    const res = await mg.messages.create(config.get("service").domain, options);
+    return res;
   } catch (err) {
     throw err;
   }
