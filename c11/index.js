@@ -19,6 +19,8 @@ require("./pkg/db");
 const api = express();
 
 api.use(express.json());
+api.use(express.urlencoded({ extended: false }));
+api.set("view engine", "ejs");
 
 api.use(
   jwt({
@@ -30,6 +32,10 @@ api.use(
       "/api/v1/auth/register",
       "/api/v1/auth/forgot-password",
       "/api/v1/auth/reset-password",
+      "/api/v1/sendmessage",
+      "/api/v1/sendmail",
+      "/api/v1/reset-pass",
+      "/forgot-password",
     ],
   })
 );
@@ -40,9 +46,13 @@ api.get("/api/v1/auth/refresh-token", refreshToken);
 api.post("/api/v1/auth/forgot-password", forgotPassword);
 api.post("/api/v1/auth/reset-password", resetPassword);
 
+api.get("/forgot-password", (req, res) => {
+  res.render("forgot-password");
+});
+
 api.post("/api/v1/sendmessage", sendMessage);
 api.post("/api/v1/sendmail", sendWelcomeMail);
-api.post("api/v1/reset-pass", sendPasswordResetMail);
+api.post("/api/v1/reset-pass", sendPasswordResetMail);
 
 api.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedAccess") {
