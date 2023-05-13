@@ -7,14 +7,15 @@ const {
   sendPasswordResetMail,
 } = require("./handlers/mailer");
 const config = require("./pkg/config");
+require("./pkg/db");
 const {
   login,
   register,
   refreshToken,
   forgotPassword,
   resetPassword,
+  resetPassTemplate,
 } = require("./handlers/auth");
-require("./pkg/db");
 
 const api = express();
 
@@ -23,6 +24,7 @@ api.use(express.urlencoded({ extended: false }));
 api.set("view engine", "ejs");
 
 api.use(
+  "/api",
   jwt({
     secret: config.get("development").jwt_key,
     algorithms: ["HS256"],
@@ -31,11 +33,6 @@ api.use(
       "/api/v1/auth/login",
       "/api/v1/auth/register",
       "/api/v1/auth/forgot-password",
-      "/api/v1/auth/reset-password",
-      "/api/v1/sendmessage",
-      "/api/v1/sendmail",
-      "/api/v1/reset-pass",
-      "/forgot-password",
     ],
   })
 );
@@ -44,8 +41,8 @@ api.post("/api/v1/auth/login", login);
 api.post("/api/v1/auth/register", register);
 api.get("/api/v1/auth/refresh-token", refreshToken);
 api.post("/api/v1/auth/forgot-password", forgotPassword);
-api.post("/api/v1/auth/reset-password", resetPassword);
-
+api.post("/reset-password/:id/:token", resetPassword);
+api.get("/reset-password/:id/:token", resetPassTemplate);
 api.get("/forgot-password", (req, res) => {
   res.render("forgot-password");
 });
@@ -65,5 +62,3 @@ api.listen(config.get("development").port, (err) => {
     ? console.log(err)
     : console.log(`Server started on port ${config.get("development").port}`);
 });
-
-//Homework

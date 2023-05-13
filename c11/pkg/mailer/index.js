@@ -31,18 +31,27 @@ const sendMail = async (to, type, data) => {
   let templatePath = `${__dirname}/../../email_templates/${mailTemplates[type].template}`;
   let content = await readTemplate(templatePath);
 
-  for (let i in data) {
-    let regex = new RegExp(`\{\{${i}\}\}`, "g");
-    content = content.replace(regex, data[i]);
-  }
+  const { user, link } = data;
+  const userfullname = user.fullname.split(" ");
+  const firstName = userfullname[0];
+  const lastName = userfullname[1];
+
+  let regexName = new RegExp(`\{\{first_name\}\}`, "g");
+  let regexSurname = new RegExp(`\{\{last_name\}\}`, "g");
+  let regexLink = new RegExp(`\{\{link\}\}`, "g");
+  content = content.replace(regexName, firstName);
+  content = content.replace(regexSurname, lastName);
+  content = content.replace(regexLink, link);
 
   let options = {
     from: config.get("development").sender_email,
     to: to,
     subject: title,
-    // text: "First testing with text",
     html: content,
   };
+
+  console.log("options", options);
+
   try {
     const res = await mg.messages.create(
       config.get("development").domain,
