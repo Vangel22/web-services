@@ -82,41 +82,37 @@ const forgotPassword = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  //user must be logged in to request password change
-  //user knows his current password but wants to change it
-  //fields to check
-  //old password
-  //new password
-  //confirm new password
-  const userEmail = req.user.email;
-  const oldPassword = req.body.old_password;
-  const oldPasswordHashed = bcrypt.hashSync(oldPassword);
+  await validate(req.body, AccountReset);
+  const { new_password, old_password, email } = req.body;
 
-  const userAccount = await account.getByEmail(userEmail);
+  //testsemos@test.com
+  const userAccount = await accounts.getByEmail(email);
 
-  if (userAccount.password !== oldPasswordHashed) {
-    throw {
-      code: 400,
-      error: "Incorect password!",
-    };
+  //plain: new123
+  //hashed: abc123cba
+  if (!bcrypt.compareSync(old_password, userAccount.password)) {
+    return res.status(400).send("Incorrect old password!");
   }
 
-  const newPassword = req.body.new_password;
-  const newPasswordHashed = bcrypt.hashSync(newPassword);
+  const newPasswordHashed = bcrypt.hashSync(new_password);
 
-  if (newPasswordHashed === oldPasswordHashed) {
-    throw {
-      code: 400,
-      error: "New password cannot be old password!",
-    };
+  if (old_password === new_password) {
+    return res.status(400).send("New password cannot be old password");
   }
 
-  //create a new function to change the user password
-  const userPassChanged = await account.setNewPassword(
-    userAccount._id,
+  const userPassChanged = await accounts.setNewPassword(
+    userAccount._id.toString(),
     newPasswordHashed
   );
-  
+
+  // return res.status(200).send(userPassChanged);
+
+  //create a new function to change the user password
+  // const userPassChanged = await account.setNewPassword(
+  //   userAccount._id,
+  //   newPasswordHashed
+  // );
+
   return res.status(200).send(userPassChanged);
 };
 
