@@ -38,6 +38,10 @@ api.use(
 
 api.use(fileUpload());
 
+// api.use(fileUpload({
+//   limits: { fileSize: 50 * 1024 * 1024 },
+// }));
+
 api.post("/api/v1/auth/login", login);
 api.post("/api/v1/auth/register", register);
 api.get("/api/v1/auth/refresh-token", refreshToken);
@@ -46,8 +50,11 @@ api.post("/api/v1/auth/reset-password", resetPassword);
 
 api.post("/api/v1/storage", upload);
 api.get("/api/v1/storage/:filename", download);
-api.get("/api/v1/storage", listFiles);
+api.get("/api/v1/storage", listFiles); // list the files of the user
 api.delete("/api/v1/storage/:filename", removeFile);
+// remove a file from the user
+// Bonus: check if the file is the last one in the folder
+// if it is also delete the directory
 
 api.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedAccess") {
@@ -63,4 +70,4 @@ api.listen(config.get("development").port, (err) => {
 
 //HOMEWORK
 // 1. api.get("/api/v1/storage", listFiles)
-// 2. api.delete("/api/v1/stodage/:filename", removeFile)
+// 2. api.delete("/api/v1/storage/:filename", removeFile)
